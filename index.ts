@@ -1,9 +1,7 @@
-import "@jxa/global-type";
-
-import { run } from "@jxa/run";
 import { argv } from "bun";
 import { homedir } from "os";
 import path from "path";
+import { getCurrentTrack } from "./jxa";
 
 const MS_PER_MINUTE = 1_000 * 60;
 const UPDATE_TIMES_PER_MINUTE = 12; // run for 55 seconds (on the 60th second a new instance will be called!)
@@ -58,45 +56,6 @@ async function updateMusicFile(): Promise<void> {
 async function updateTimeFile(): Promise<void> {
 	Bun.write(workPath("current_time.txt"), await getCurrentTime(), {
 		createPath: true,
-	});
-}
-
-async function getCurrentTrack(): Promise<string> {
-	// Using native macOS JavaScript for Automation (JXA), we
-	// ask the Music app for its current track then return it.
-	return await run(() => {
-		const musicApp = Application("Music");
-
-		if (!musicApp.running()) {
-			return "Nothing is playing";
-		}
-
-		let currentTrack, title, artist;
-
-		try {
-			currentTrack = musicApp.currentTrack();
-
-			title = currentTrack.name();
-			artist = currentTrack.artist();
-		} catch (err) {
-			// If there's no current track or there's an error retrieving it,
-			// fall back to "Nothing is playing"
-			return "Nothing is playing";
-		}
-
-		return `${artist} - ${title}`;
-
-		// ++ ORIGINAL APPLESCRIPT VERSION: ++
-		// if application "Music" is running then
-		// 	try
-		// 		tell application "Music"
-		// 			set songTitle to the name of the current track
-		// 			set songArtist to the artist of the current track
-		// 			return songArtist & " — " & songTitle
-		// 		end tell
-		// 	end try
-		// end if
-		// return "Nothing is playing"
 	});
 }
 
