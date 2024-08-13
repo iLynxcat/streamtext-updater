@@ -5,14 +5,14 @@ declare function Application(applicationName: "Music"): {
 	currentTrack(): { name(): string; artist(): string };
 };
 
-export async function getCurrentTrack(): Promise<string> {
+export async function getCurrentTrack(): Promise<string | null> {
 	// Using native macOS JavaScript for Automation (JXA), we
 	// ask the Music app for its current track then return it.
 	return await runJxa(() => {
 		const musicApp = Application("Music");
 
 		if (!musicApp.running()) {
-			return "Nothing is playing";
+			return null;
 		}
 
 		let currentTrack, title, artist;
@@ -25,7 +25,7 @@ export async function getCurrentTrack(): Promise<string> {
 		} catch (err) {
 			// If there's no current track or there's an error retrieving it,
 			// fall back to "Nothing is playing"
-			return "Nothing is playing";
+			return null;
 		}
 
 		return `${artist} - ${title}`;

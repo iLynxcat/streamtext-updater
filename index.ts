@@ -1,4 +1,3 @@
-import { argv } from "bun";
 import { homedir } from "os";
 import path from "path";
 import { getCurrentTrack } from "./jxa";
@@ -11,7 +10,7 @@ const startTime = Date.now();
 const workPath = (...segments: string[]) =>
 	path.join(homedir(), ".stream", ...segments);
 
-let args = argv.slice(2);
+let args = Bun.argv.slice(2);
 
 switch (args[0]) {
 	case "--music":
@@ -48,9 +47,13 @@ switch (args[0]) {
 }
 
 async function updateMusicFile(): Promise<void> {
-	Bun.write(workPath("current_track.txt"), await getCurrentTrack(), {
-		createPath: true,
-	});
+	Bun.write(
+		workPath("current_track.txt"),
+		(await getCurrentTrack()) ?? "Nothing is playing",
+		{
+			createPath: true,
+		}
+	);
 }
 
 async function updateTimeFile(): Promise<void> {
