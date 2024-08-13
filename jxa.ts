@@ -1,4 +1,5 @@
 import { run as runJxa } from "@jxa/run";
+import { debug } from "./log";
 
 declare function Application(applicationName: "Music"): {
 	running(): boolean;
@@ -6,6 +7,9 @@ declare function Application(applicationName: "Music"): {
 };
 
 export async function getCurrentTrack(): Promise<string | null> {
+	debug("Getting current track via JXA");
+	debug("NOTE: No logs will come from the script.");
+
 	// Using native macOS JavaScript for Automation (JXA), we
 	// ask the Music app for its current track then return it.
 	return await runJxa(() => {
