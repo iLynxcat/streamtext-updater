@@ -1,0 +1,23 @@
+{
+	"name": "@ilynxcat/streamtext",
+	"module": "index.ts",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"compile": "bun build index.ts --compile --target=bun-darwin-arm64 --outfile ./streamtext-update"
+	},
+	"devDependencies": {
+		"@jxa/global-type": "^1.3.6",
+		"@jxa/types": "^1.3.6",
+		"@types/bun": "latest",
+		"@types/node": "^22.2.0",
+		"@types/yargs": "^17.0.33"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"@jxa/run": "^1.3.6",
+		"yargs": "^17.7.2"
+	}
+}
